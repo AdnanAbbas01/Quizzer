@@ -11,7 +11,9 @@ const score = document.querySelector(".total-score");
 const fill = document.querySelector(".fill");
 const modalScore = document.querySelector(".modal-score");
 const scoreDescription = document.querySelector(".total-user-score");
+const correctAnswerMain = document.querySelector(".correct_answer_parent");
 const playAgain = document.querySelector(".play-again");
+const revealAnswer = document.querySelector(".reveal-answer");
 const modal = document.querySelector(".modal-main");
 const changeChoice = document.querySelector('.choice');
 
@@ -24,6 +26,7 @@ let randomNumber = [];
 let getRandomNumber;
 let choices;
 let width = 0;
+let answerVisible = false;
 
 
 if(!localStorage.getItem('params')){
@@ -60,6 +63,7 @@ window.onload = async function () {
     )
     .then((res) => {
       results = res.data.results;
+      console.log(results)
     })
     .catch((error) => error);
     if (results && results.length > 9) {
@@ -87,6 +91,7 @@ allMcqs.forEach((mcq) => {
           questionNo += 1;
         }
         e.target.classList.add("true");
+        console.log(e.target.parentNode)
         
         setTimeout(() => {
           e.target.classList.remove("true");
@@ -98,6 +103,7 @@ allMcqs.forEach((mcq) => {
           fill.style.width = `${width}px`;
           mcqsWithQuestions();
         }, 300);
+        return;
       } else if (
         mcq.lastElementChild.innerHTML != results[index].correct_answer
         ) {
@@ -118,6 +124,7 @@ allMcqs.forEach((mcq) => {
         }, 300);
       }
     }
+    
 
     if (index >= 9) {
       setTimeout(() => {
@@ -158,4 +165,25 @@ changeChoice.addEventListener('click', () => {
   localStorage.removeItem('params');
   localStorage.removeItem('user');
   location.href = 'user.html';
+})
+
+revealAnswer.addEventListener('click', (e) => {
+  if(!answerVisible){
+    results.forEach(result => {
+     const h1 = document.createElement('h1');
+     const p = document.createElement('p');
+     h1.setAttribute('class', 'correct_answer_question');
+     p.setAttribute('class', 'correct_answer');
+     h1.innerHTML = result.question;
+     p.innerHTML = `Answer: ${result.correct_answer}`;
+     correctAnswerMain.appendChild(h1);
+     correctAnswerMain.appendChild(p);
+    })
+    correctAnswerMain.classList.toggle('none');
+    answerVisible = true;
+  }
+  else{
+    correctAnswerMain.classList.toggle('none');
+    answerVisible = true;
+  }
 })
