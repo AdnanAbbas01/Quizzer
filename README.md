@@ -1,5 +1,7 @@
 # Quizzer (Quiz App)
 
+Quizzer is an app where you can test your knowledge by solving different MCQS base on your choice.
+
 ## How to use 
 
 - Clone the repository
