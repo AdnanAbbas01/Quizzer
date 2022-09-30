@@ -62,13 +62,18 @@ window.onload = async function () {
       results = res.data.results;
     })
     .catch((error) => error);
+    if (results && results.length > 9) {
   choices = results[index].incorrect_answers;
   choices.push(results[index].correct_answer);
-  if (results) {
     mcqsWithQuestions();
     width += 15.4;
     fill.style.width = `${width}px`;
     totalQuestions.innerHTML = `Questions ${questionNo}/${results.length}`;
+  }
+  else{
+    localStorage.removeItem('params');
+    localStorage.removeItem('user');
+    location.href = 'user.html';
   }
 };
 
